@@ -100,7 +100,7 @@ async function resolveSecret(
     );
   }
 
-  const value = await options.secrets?.get(name);
+  const value = await options.secrets?.get(name, hostname.toLowerCase());
   if (value === undefined || value === '') {
     return err(
       runtimeError('secret_missing', `secret '${name}' is bound to ${binding.host} but no provider has a value`, {

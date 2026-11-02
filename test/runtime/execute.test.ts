@@ -216,6 +216,38 @@ test('a bound secret with no value is a named failure', async () => {
   assert.equal(calls.length, 0);
 });
 
+test('the provider is told which host the value is for', async () => {
+  const { fetch } = recorder([json({ ok: true })]);
+  const seen: string[] = [];
+  const provider = {
+    async get(name: string, host?: string): Promise<string | undefined> {
+      seen.push(`${name}@${host ?? 'none'}`);
+      return 'top-secret-value';
+    },
+  };
+
+  const result = await executeOperation(operation, { number: 7 }, { baseUrl: 'https://api.demo.test', fetch, bindings, secrets: provider });
+
+  assert.ok(result.ok);
+  assert.deepEqual(seen, ['DEMO_TOKEN@api.demo.test']);
+});
+
+test('a provider may refuse a host by returning no value', async () => {
+  const { fetch, calls } = recorder([json({})]);
+  const provider = {
+    async get(): Promise<string | undefined> {
+      return undefined;
+    },
+  };
+
+  const error = expectErr(
+    await executeOperation(operation, { number: 7 }, { baseUrl: 'https://api.demo.test', fetch, bindings, secrets: provider }),
+  );
+
+  assert.equal(error.code, 'secret_missing');
+  assert.equal(calls.length, 0);
+});
+
 test('a private target is blocked even when the map asks for it', async () => {
   const { fetch, calls } = recorder([json({})]);
   const error = expectErr(await executeOperation(operation, { number: 7 }, { baseUrl: 'https://10.0.0.5', fetch, bindings, secrets }));

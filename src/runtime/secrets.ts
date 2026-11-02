@@ -17,7 +17,15 @@ import type { Result } from '../view/result.ts';
 import { err, ok } from '../view/result.ts';
 
 export interface SecretProvider {
-  get(name: string): Promise<string | undefined>;
+  /**
+   * Supply a value for a name.
+   *
+   * `host` is the destination the runtime is about to contact. A binding already
+   * pins the value to one exact host, so the host argument is only a second
+   * check for providers that keep their own affinity (a vault, an OS keychain, a
+   * gateway with allow-listed hosts). A provider that has no affinity ignores it.
+   */
+  get(name: string, host?: string): Promise<string | undefined>;
 }
 
 export type SecretBinding = {

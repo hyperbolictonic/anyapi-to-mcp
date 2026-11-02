@@ -60,7 +60,9 @@ hidden state.
   never widen where a secret is sent, and a credential never enters a map, a
   view, a handle, a log, a stored payload or the audit trail.
 - The core ships an environment provider only. Every other provider — including
-  third-party secret managers — is an adapter injected by the host.
+  third-party secret managers — is an adapter injected by the host. A provider is
+  told the destination host (`get(name, host)`), so one with its own affinity can
+  refuse; that is a second check, never a replacement for the binding.
 - Request headers are never written to a payload store.
 
 ## Handles and payloads
