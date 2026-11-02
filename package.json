@@ -58,6 +58,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.build.json && node scripts/rewrite-declarations.mjs",
     "prepack": "pnpm -s build",
+    "prepare": "tsc -p tsconfig.build.json && node scripts/rewrite-declarations.mjs",
     "typecheck": "tsc --noEmit",
     "test": "node --test",
     "example": "node examples/view-quickstart.ts",
