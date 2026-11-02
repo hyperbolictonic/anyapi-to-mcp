@@ -1,0 +1,171 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Petstore",
+    "version": "1.0.0",
+    "description": "A small pet store used as the importer fixture. Every construct here is one the importer must handle: server variables, an allOf schema, an enum, a wrapped collection, a nested collection, a deprecated operation and a request body."
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com/{version}",
+      "variables": { "version": { "default": "v1" } }
+    }
+  ],
+  "security": [{ "bearerAuth": [] }],
+  "tags": [{ "name": "pets" }],
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "List pets",
+        "tags": ["pets"],
+        "parameters": [
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "default": 20, "minimum": 1, "maximum": 100 } },
+          { "name": "offset", "in": "query", "schema": { "type": "integer", "default": 0 } },
+          { "name": "status", "in": "query", "schema": { "type": "string", "enum": ["available", "sold"] } },
+          { "name": "tags", "in": "query", "schema": { "type": "array", "items": { "type": "string" } } }
+        ],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PetsPage" } } }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a pet",
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/NewPet" } } }
+        },
+        "responses": {
+          "201": {
+            "description": "created",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Pet" } } }
+          }
+        }
+      }
+    },
+    "/pets/{petId}": {
+      "get": {
+        "summary": "Get a pet",
+        "parameters": [{ "name": "petId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Pet" } } }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a pet",
+        "parameters": [{ "name": "petId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "204": { "description": "gone" } }
+      }
+    },
+    "/owners/{ownerId}": {
+      "get": {
+        "summary": "Get an owner",
+        "parameters": [{ "name": "ownerId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Owner" } } }
+          }
+        }
+      }
+    },
+    "/owners/{ownerId}/pets": {
+      "get": {
+        "summary": "List an owner's pets",
+        "parameters": [{ "name": "ownerId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": {
+              "application/json": {
+                "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Pet" } }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets/{petId}/avatar": {
+      "put": {
+        "summary": "Upload an avatar",
+        "parameters": [{ "name": "petId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": { "type": "object", "properties": { "file": { "type": "string", "format": "binary" } } }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "ok",
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Pet" } } }
+          }
+        }
+      }
+    },
+    "/pets/{petId}/photo": {
+      "post": {
+        "summary": "Upload a photo",
+        "deprecated": true,
+        "parameters": [{ "name": "petId", "in": "path", "required": true, "schema": { "type": "integer" } }],
+        "responses": { "204": { "description": "gone" } }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": { "type": "http", "scheme": "bearer" }
+    },
+    "schemas": {
+      "Pet": {
+        "allOf": [
+          { "$ref": "#/components/schemas/NewPet" },
+          {
+            "type": "object",
+            "required": ["id"],
+            "properties": {
+              "id": { "type": "integer" },
+              "owner_id": { "type": "integer" },
+              "status": { "type": "string", "enum": ["available", "sold"] },
+              "created_at": { "type": "string", "format": "date-time" }
+            }
+          }
+        ]
+      },
+      "NewPet": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string" },
+          "tag": { "type": "string" },
+          "owner_id": { "type": "integer" }
+        }
+      },
+      "Owner": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "email": { "type": "string" }
+        }
+      },
+      "PetsPage": {
+        "type": "object",
+        "properties": {
+          "total": { "type": "integer" },
+          "limit": { "type": "integer" },
+          "offset": { "type": "integer" },
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/Pet" } }
+        }
+      }
+    }
+  }
+}

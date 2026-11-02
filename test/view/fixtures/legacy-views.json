@@ -1,0 +1,10 @@
+{
+  "note": "Legacy view fragments. These use the old mode names that earlier releases shipped with; the view layer normalises them instead of rejecting them, so a saved recipe keeps rendering after the mode union was closed.",
+  "views": {
+    "table": { "select": "/items", "mode": "table", "fields": ["number", "title", "state"] },
+    "documents": { "select": "/items", "mode": "documents", "titleField": "title", "limits": { "maxItems": 2 } },
+    "outline": { "select": "/", "mode": "outline", "limits": { "maxDepth": 2 } },
+    "json": { "select": "/items", "mode": "json", "limits": { "maxItems": 2 } },
+    "array": { "select": "/items", "mode": "array", "limits": { "maxItems": 2 } }
+  }
+}

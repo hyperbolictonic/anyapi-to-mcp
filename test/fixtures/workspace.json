@@ -1,0 +1,9 @@
+{
+  "maps": [
+    { "path": "./maps", "writable": true, "label": "project" },
+    { "path": "./bundled", "writable": false, "label": "bundled" }
+  ],
+  "pins": "./state/pins.json",
+  "payloads": { "path": "./cache/payloads", "maxBytes": 250000000, "ttlSeconds": 86400 },
+  "secrets": "./bindings.json"
+}

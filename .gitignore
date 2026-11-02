@@ -1,0 +1,19 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Local runtime state and secrets
+.env
+.env.*
+data/
+*.log
+
+# Spike scratch: payload stores and captured responses
+spike/store/
+spike/fixtures/captured/
+spike/pins.json
+
+# OS noise
+.DS_Store
+Thumbs.db

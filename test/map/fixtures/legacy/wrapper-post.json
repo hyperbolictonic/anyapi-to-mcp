@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "id": "sample.auth.login",
+  "name": "Sample: log in",
+  "request": {
+    "method": "POST",
+    "url": "https://api.sample.test/auth/login",
+    "headers": { "Accept": "application/json" },
+    "body": {
+      "username": "{{username}}",
+      "password": "{{password}}",
+      "expiresInMins": "{{expires_in_mins}}"
+    },
+    "timeoutMs": 15000
+  },
+  "inputSchema": {
+    "type": "object",
+    "properties": {
+      "username": {
+        "type": "string",
+        "description": "Account name.",
+        "default": "demo"
+      },
+      "password": {
+        "type": "string",
+        "description": "Published demo password."
+      },
+      "expires_in_mins": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 43200,
+        "default": 43200
+      }
+    },
+    "additionalProperties": false
+  },
+  "exposeAsTool": false,
+  "description": "Exchanges a username and password for tokens.",
+  "response": {
+    "schemaVersion": 1,
+    "select": "$",
+    "mode": "document",
+    "fields": {
+      "Access token": "accessToken",
+      "Refresh token": "refreshToken"
+    }
+  },
+  "mutating": false
+}

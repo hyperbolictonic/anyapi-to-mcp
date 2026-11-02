@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 2,
+  "id": "github",
+  "title": "GitHub REST",
+  "baseUrl": "https://api.github.com",
+  "provenance": { "source": "human", "date": "2026-11-01" },
+  "resources": [
+    { "id": "repo", "title": "Repository", "key": "full_name" },
+    { "id": "issue", "title": "Issue", "key": "number" }
+  ],
+  "operations": [
+    {
+      "id": "repo.get",
+      "resource": "repo",
+      "title": "Get a repository",
+      "request": {
+        "method": "GET",
+        "path": "/repos/{owner}/{repo}",
+        "headers": { "accept": "application/vnd.github+json" }
+      },
+      "input": {
+        "required": ["owner", "repo"],
+        "properties": {
+          "owner": { "type": "string" },
+          "repo": { "type": "string" }
+        }
+      },
+      "view": { "select": "/", "mode": "auto" }
+    },
+    {
+      "id": "repo.issues.list",
+      "resource": "repo",
+      "returns": "issue",
+      "title": "List issues",
+      "request": {
+        "method": "GET",
+        "path": "/repos/{owner}/{repo}/issues",
+        "query": { "state": "{state}", "per_page": "{per_page}" }
+      },
+      "input": {
+        "required": ["owner", "repo"],
+        "properties": {
+          "owner": { "type": "string" },
+          "repo": { "type": "string" },
+          "state": { "type": "string", "enum": ["open", "closed", "all"], "default": "open" },
+          "per_page": { "type": "integer", "default": 100, "maximum": 100 }
+        }
+      },
+      "pagination": { "kind": "link-header", "rel": "next" },
+      "view": {
+        "select": "/",
+        "mode": "rows",
+        "fields": ["number", "title", "state", "user.login", "created_at", "comments"]
+      }
+    }
+  ],
+  "links": [
+    {
+      "from": "issue",
+      "field": "user.login",
+      "to": "repo",
+      "operation": "repo.get",
+      "argument": "owner",
+      "provenance": "inferred"
+    }
+  ]
+}

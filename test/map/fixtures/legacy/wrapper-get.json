@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "sample.auth.me",
+  "name": "Sample: who am I",
+  "request": {
+    "method": "GET",
+    "url": "https://api.sample.test/auth/me",
+    "headers": { "Accept": "application/json" },
+    "auth": "sample_token",
+    "timeoutMs": 15000
+  },
+  "inputSchema": {
+    "type": "object",
+    "additionalProperties": true
+  },
+  "exposeAsTool": false,
+  "description": "Returns the user for the stored access token.",
+  "response": {
+    "schemaVersion": 1,
+    "select": "$",
+    "mode": "document",
+    "fields": {
+      "Name": "firstName",
+      "Surname": "lastName",
+      "Email": "email",
+      "User id": "id"
+    },
+    "record": {
+      "id": "id",
+      "username": "username"
+    }
+  },
+  "mutating": false
+}

@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "id": "dummyjson",
+  "title": "DummyJSON — a public, credential-free test API",
+  "description": "Small hand-written map used by the runtime smoke test and the first CLI example.",
+  "baseUrl": "https://dummyjson.com",
+  "provenance": { "source": "human", "date": "2026-11-01" },
+  "resources": [
+    { "id": "product", "title": "Product", "key": "id" },
+    { "id": "user", "title": "User", "key": "id" }
+  ],
+  "operations": [
+    {
+      "id": "products.list",
+      "resource": "product",
+      "title": "List products",
+      "description": "One page of products, with a declared projection so the answer stays small.",
+      "request": {
+        "method": "GET",
+        "path": "/products",
+        "query": { "limit": "{limit}", "skip": "{skip}" }
+      },
+      "input": {
+        "properties": {
+          "limit": { "type": "integer", "default": 10, "minimum": 1, "maximum": 100 },
+          "skip": { "type": "integer", "default": 0, "minimum": 0 }
+        }
+      },
+      "pagination": { "kind": "offset", "totalPath": "/total", "skipPath": "/skip", "limitPath": "/limit" },
+      "view": {
+        "select": "/products",
+        "mode": "rows",
+        "fields": ["id", "title", "price", "rating", "stock"]
+      }
+    },
+    {
+      "id": "products.get",
+      "resource": "product",
+      "title": "Get one product",
+      "request": { "method": "GET", "path": "/products/{id}" },
+      "input": {
+        "required": ["id"],
+        "properties": { "id": { "type": "integer" } }
+      },
+      "view": { "select": "/", "mode": "document" }
+    },
+    {
+      "id": "products.add",
+      "resource": "product",
+      "title": "Add a product (DummyJSON simulates this; nothing is kept)",
+      "request": {
+        "method": "POST",
+        "path": "/products/add",
+        "body": { "title": "{title}", "price": "{price}" }
+      },
+      "input": {
+        "required": ["title"],
+        "properties": { "title": { "type": "string" }, "price": { "type": "number" } }
+      },
+      "view": { "select": "/", "mode": "document" }
+    }
+  ],
+  "links": [
+    {
+      "from": "product",
+      "field": "id",
+      "to": "product",
+      "operation": "products.get",
+      "argument": "id",
+      "provenance": "human"
+    }
+  ]
+}

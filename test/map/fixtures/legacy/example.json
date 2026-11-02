@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "old-wrapper",
+  "name": "Old Wrapper",
+  "baseUrl": "https://example.test/api",
+  "steps": [
+    {
+      "name": "list-things",
+      "title": "List things",
+      "method": "GET",
+      "path": "/things/{thingId}",
+      "query": { "limit": "{limit}" },
+      "headers": { "accept": "application/json" },
+      "recipe": { "select": "/data", "mode": "documents", "fields": ["id", "name"] }
+    }
+  ]
+}

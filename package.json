@@ -1,0 +1,81 @@
+{
+  "name": "anyapi-to-mcp",
+  "version": "0.1.0",
+  "description": "Wrap any API as a typed, token-efficient, navigable MCP server.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyperbolictonic/anyapi-to-mcp.git"
+  },
+  "homepage": "https://github.com/hyperbolictonic/anyapi-to-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/hyperbolictonic/anyapi-to-mcp/issues"
+  },
+  "type": "module",
+  "private": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./view": {
+      "types": "./dist/view/index.d.ts",
+      "import": "./dist/view/index.js"
+    },
+    "./map": {
+      "types": "./dist/map/index.d.ts",
+      "import": "./dist/map/index.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/index.d.ts",
+      "import": "./dist/runtime/index.js"
+    },
+    "./store": {
+      "types": "./dist/store/index.d.ts",
+      "import": "./dist/store/index.js"
+    },
+    "./mcp": {
+      "types": "./dist/mcp/index.d.ts",
+      "import": "./dist/mcp/index.js"
+    }
+  },
+  "bin": {
+    "anyapi-to-mcp": "./bin/wrap2mcp.js",
+    "wrap2mcp": "./bin/wrap2mcp.js"
+  },
+  "files": [
+    "dist",
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@11.1.2",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node scripts/rewrite-declarations.mjs",
+    "prepack": "pnpm -s build",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test",
+    "example": "node examples/view-quickstart.ts",
+    "cli": "pnpm -s build && node bin/wrap2mcp.js",
+    "smoke": "node examples/runtime-smoke.ts"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "rest",
+    "api",
+    "openapi",
+    "wrappers",
+    "llm",
+    "tools"
+  ],
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0"
+  }
+}

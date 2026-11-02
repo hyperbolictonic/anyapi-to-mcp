@@ -1,0 +1,10 @@
+{
+  "id": "github",
+  "operations": [
+    {
+      "id": "repo.get",
+      "title": "Get a repository (human-corrected)",
+      "view": { "select": "/", "mode": "document" }
+    }
+  ]
+}

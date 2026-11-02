@@ -1,0 +1,22 @@
+{
+  "operations": [
+    {
+      "id": "products.list",
+      "resource": "product",
+      "title": "List products",
+      "request": { "method": "GET", "path": "/products" },
+      "view": { "select": "/products", "mode": "rows", "fields": ["id", "title", "price"] }
+    },
+    {
+      "id": "products.get",
+      "resource": "product",
+      "title": "Get a product",
+      "request": { "method": "GET", "path": "/products/{id}" },
+      "input": {
+        "required": ["id"],
+        "properties": { "id": { "type": "integer" } }
+      },
+      "view": { "select": "/", "mode": "auto" }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+openapi: 3.0.3
+info:
+  title: Widgets
+  version: 1.0.0
+  description: |
+    A tiny YAML spec, used to prove the YAML path reaches the importer.
+servers:
+  - url: https://widgets.example.com/v1
+paths:
+  /widgets:
+    get:
+      summary: List widgets
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [active, retired]
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Widget"
+    post:
+      summary: Create a widget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewWidget"
+      responses:
+        "201":
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Widget"
+  /widgets/{widgetId}:
+    get:
+      summary: Get a widget
+      parameters:
+        - name: widgetId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Widget"
+components:
+  schemas:
+    Widget:
+      allOf:
+        - $ref: "#/components/schemas/NewWidget"
+        - type: object
+          properties:
+            id:
+              type: integer
+    NewWidget:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string

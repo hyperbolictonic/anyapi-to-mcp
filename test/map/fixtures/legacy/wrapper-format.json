@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "sample.docs.readme",
+  "name": "Sample repository README",
+  "request": {
+    "method": "GET",
+    "url": "https://api.sample.test/repos/{{owner}}/{{repo|raw}}/readme",
+    "headers": { "Accept": "application/vnd.sample+json" }
+  },
+  "inputSchema": {
+    "type": "object",
+    "properties": {},
+    "additionalProperties": false
+  },
+  "exposeAsTool": false,
+  "description": "Returns the documentation URL and README metadata.",
+  "response": {
+    "schemaVersion": 1,
+    "mode": "document",
+    "fields": {
+      "File": "name",
+      "Documentation": "html_url",
+      "Path": "path",
+      "Size": { "path": "size", "format": "number" }
+    }
+  },
+  "mutating": false,
+  "lastVerified": "2026-10-26T17:50:40.932Z"
+}

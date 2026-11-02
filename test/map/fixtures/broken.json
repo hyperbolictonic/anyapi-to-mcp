@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 2,
+  "id": "broken",
+  "title": "Broken map",
+  "baseUrl": "https://api.example.test",
+  "resources": [{ "id": "thing", "title": "Thing" }],
+  "operations": [
+    {
+      "id": "thing.list",
+      "resource": "missing-resource",
+      "title": "List things",
+      "request": { "method": "GET", "path": "/things" }
+    }
+  ]
+}

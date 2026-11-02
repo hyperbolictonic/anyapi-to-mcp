@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 2,
+  "id": "dummyjson",
+  "title": "DummyJSON",
+  "baseUrl": "https://dummyjson.com",
+  "resources": [{ "id": "product", "title": "Product", "key": "id" }]
+}
