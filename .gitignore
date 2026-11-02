@@ -17,3 +17,7 @@ spike/pins.json
 # OS noise
 .DS_Store
 Thumbs.db
+
+# Never commit registry credentials
+.npmrc
+.npmrc.*
