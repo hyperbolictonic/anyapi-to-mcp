@@ -5,6 +5,7 @@
 // the structured data for scripting.
 
 import { existsSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import path from 'node:path';
 
 import { createClient } from './client.ts';
@@ -17,6 +18,9 @@ import { createMcpServer } from './mcp/server.ts';
 import { importCommand, learnCommand } from './authoring.ts';
 import type { AuthoringResult } from './authoring.ts';
 import type { Mode } from './view/types.ts';
+
+/** Read from the shipped package.json, so a release cannot disagree with the binary. */
+const VERSION = (createRequire(import.meta.url)('../package.json') as { version: string }).version;
 
 export type Command =
   | { readonly kind: 'ls'; readonly path: string; readonly json: boolean }
@@ -356,7 +360,7 @@ export async function main(argv: readonly string[], deps: MainDeps = {}): Promis
     return 0;
   }
   if (command.kind === 'version') {
-    write('0.1.0');
+    write(VERSION);
     return 0;
   }
   if (command.kind === 'error') {

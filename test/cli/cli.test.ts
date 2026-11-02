@@ -104,6 +104,15 @@ test('parseArgs: help and version win over a verb', () => {
   assert.deepEqual(parseArgs(['ls', '--version']), { kind: 'version' });
 });
 
+test('main: --version reports the package version', async () => {
+  const pkg = JSON.parse(await readFile(path.join(import.meta.dirname, '..', '..', 'package.json'), 'utf8')) as {
+    version: string;
+  };
+  const cap = capture();
+  assert.equal(await main(['--version'], cap.deps), 0);
+  assert.equal(cap.out.join('').trim(), pkg.version);
+});
+
 test('main: ls prints the map line and exits 0', async () => {
   const cap = capture();
   assert.equal(await main(['ls', '/'], cap.deps), 0);
