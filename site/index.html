@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Any API → MCP — typed, navigable, token-efficient</title>
+  <meta name="description" content="anyapi-to-mcp turns a REST API into a typed, navigable MCP surface: one declarative map per API, five verbs, and responses stored behind addresses. Experimental alpha." />
+  <link rel="canonical" href="https://hyperbolictonic.github.io/anyapi-to-mcp/" />
+  <link rel="alternate" type="text/markdown" href="index.md" />
+  <meta property="og:title" content="Any API → MCP" />
+  <meta property="og:description" content="A REST API becomes a typed, navigable MCP surface instead of a document an agent has to read." />
+  <meta property="og:url" content="https://hyperbolictonic.github.io/anyapi-to-mcp/" />
+  <meta name="twitter:card" content="summary" />
+  <style>
+    :root{--bg:#0b1220;--panel:#111a2b;--line:#243653;--text:#e6edf7;--muted:#9aabc2;--cyan:#22d3ee;--green:#a3e635;--violet:#a78bfa;--radius:16px;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 12% -10%,rgba(34,211,238,.15),transparent 34rem),radial-gradient(circle at 88% 8%,rgba(163,230,53,.11),transparent 34rem),var(--bg);color:var(--text);line-height:1.65}a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}.wrap{width:min(1120px,calc(100% - 40px));margin:0 auto}header{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);background:rgba(11,18,32,.84);backdrop-filter:blur(14px)}.nav{display:flex;align-items:center;justify-content:space-between;gap:18px;min-height:68px}.brand{display:flex;align-items:center;gap:11px;color:var(--text);font-weight:800;letter-spacing:.02em;font-size:13px}.brand:hover{text-decoration:none}.mark{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--green);font:800 13px/1 ui-monospace,Consolas,monospace}.brand span{display:block}.brand small{display:block;color:var(--muted);font-weight:600;font-size:10px;letter-spacing:.08em;text-transform:uppercase}.navlinks{display:flex;align-items:center;gap:16px;flex-wrap:wrap;font-size:12px}.navlinks a{color:var(--muted)}.hero{display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:48px;padding:76px 0 54px}.eyebrow{color:var(--green);font:800 12px/1.4 ui-monospace,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase}h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.055em;margin:14px 0 20px}h1 em{font-style:normal;background:linear-gradient(110deg,var(--cyan),var(--green));-webkit-background-clip:text;background-clip:text;color:transparent}.lede{font-size:clamp(1.05rem,2vw,1.25rem);color:var(--muted);max-width:650px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}.btn{display:inline-block;padding:11px 16px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);font-size:13px;font-weight:700}.btn:hover{text-decoration:none;border-color:var(--cyan)}.btn.primary{border-color:transparent;background:linear-gradient(110deg,var(--cyan),var(--green));color:#07111d}.badge{display:inline-block;margin-left:10px;padding:3px 9px;border:1px solid rgba(163,230,53,.45);border-radius:999px;color:var(--green);font:700 10px/1.6 ui-monospace,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase;vertical-align:middle}.term{border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(180deg,var(--panel),#0c1524);box-shadow:0 26px 60px rgba(0,0,0,.32);overflow:hidden}.term-bar{display:flex;align-items:center;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--muted);font:700 10px/1 ui-monospace,Consolas,monospace;letter-spacing:.1em;text-transform:uppercase}.dot{width:8px;height:8px;border-radius:50%;background:var(--line)}.term pre{margin:0;padding:18px;overflow:auto;font:12.5px/1.7 ui-monospace,Consolas,"SF Mono",monospace;color:#cfe3f7}.term .p{color:var(--green)}.term .c{color:var(--muted)}.term .s{color:var(--cyan)}section{padding:34px 0;border-top:1px solid var(--line)}h2{font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.035em;line-height:1.15;margin:0 0 10px}.section-lede{color:var(--muted);max-width:720px;margin:0 0 26px}.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card{display:block;padding:18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);color:var(--text)}.card:hover{border-color:var(--cyan);text-decoration:none}.card h3{margin:8px 0 6px;font-size:15px;letter-spacing:-.01em}.card p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}.tag{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;color:var(--green);font:700 10px/1.6 ui-monospace,Consolas,monospace;letter-spacing:.06em;text-transform:uppercase}.verbs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}.verb{padding:14px;border:1px solid var(--line);border-radius:12px;background:#0d1728}.verb code{display:block;color:var(--cyan);font:700 13px/1.4 ui-monospace,Consolas,monospace}.verb span{display:block;margin-top:6px;color:var(--muted);font-size:12px;line-height:1.5}.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.step{padding:18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--panel)}.step h3{margin:0 0 8px;font-size:14px}.step p{margin:0;color:var(--muted);font-size:13px}.step code{color:var(--cyan)}.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}.callout{padding:18px 20px;border:1px solid rgba(163,230,53,.35);border-radius:var(--radius);background:linear-gradient(180deg,rgba(163,230,53,.07),rgba(17,26,43,.7))}.callout strong{color:var(--green)}.callout p{margin:6px 0 0;color:var(--muted);font-size:13px}footer{border-top:1px solid var(--line);margin-top:20px;padding:26px 0 40px;color:var(--muted);font-size:12px}footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}code{font-family:ui-monospace,Consolas,"SF Mono",monospace}pre code{font-size:13px}.inline{background:#0d1728;border:1px solid var(--line);border-radius:6px;padding:1px 5px;font-size:.92em}@media(max-width:900px){.hero{grid-template-columns:1fr;padding-top:52px}.grid,.steps{grid-template-columns:1fr 1fr}.verbs{grid-template-columns:1fr 1fr}.cols{grid-template-columns:1fr}}@media(max-width:560px){.grid,.steps,.verbs{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="index.html">
+        <span class="mark">A→M</span>
+        <span>Any API → MCP<small>HyperbolicTonic</small></span>
+      </a>
+      <nav class="navlinks" aria-label="Site">
+        <a href="https://hyperbolictonic.github.io/">HyperbolicTonic</a>
+        <a href="README.html">Overview</a>
+        <a href="docs/DESIGN.html">Design notes</a>
+        <a href="#quick-start">Quick start</a>
+        <a href="https://github.com/hyperbolictonic/anyapi-to-mcp">GitHub</a>
+        <a href="https://www.npmjs.com/package/anyapi-to-mcp">npm</a>
+        <a href="index.md">Markdown</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" style="border-top:0">
+      <div>
+        <div class="eyebrow">Experimental alpha · MIT <span class="badge">0.1.2</span></div>
+        <h1>Any API<br /><em>→ MCP</em></h1>
+        <p class="lede">Turn a REST API into something an agent can <strong>navigate</strong> instead of something it has to <strong>read</strong>. One declarative map per API, five verbs to move through it, and every response stored behind an address.</p>
+        <div class="actions">
+          <a class="btn primary" href="#quick-start">Quick start</a>
+          <a class="btn" href="README.html">Read the overview</a>
+          <a class="btn" href="https://github.com/hyperbolictonic/anyapi-to-mcp">Source on GitHub</a>
+        </div>
+      </div>
+      <div class="term" aria-label="CLI example">
+        <div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span>&nbsp;wrap2mcp</div>
+        <pre><span class="p">$</span> wrap2mcp ls
+<span class="s">/dummyjson</span>
+
+<span class="p">$</span> wrap2mcp describe products.list
+<span class="c"># inputs, view, mutating flag, links</span>
+
+<span class="p">$</span> wrap2mcp run products.list limit=3
+<span class="c"># 3 rows · handle r_… · address /products</span>
+
+<span class="p">$</span> wrap2mcp read r_… /products/1
+<span class="c"># no network call</span></pre>
+      </div>
+    </section>
+
+    <section>
+      <h2>Navigate, not enumerate</h2>
+      <p class="section-lede">A multi-megabyte OpenAPI document costs tokens before the agent has done anything. A map is bounded: resources, the operations on them, and how each response should be presented. The agent asks for what it needs next.</p>
+      <div class="verbs">
+        <div class="verb"><code>ls</code><span>children, one line each</span></div>
+        <div class="verb"><code>find</code><span>ranked search across the map</span></div>
+        <div class="verb"><code>describe</code><span>the input contract, on demand</span></div>
+        <div class="verb"><code>run</code><span>execute; rows + meta + handle</span></div>
+        <div class="verb"><code>read</code><span>drill into a stored payload</span></div>
+      </div>
+      <p class="section-lede" style="margin:20px 0 0">There is deliberately no <code class="inline">cd</code>: every address is absolute, so transcripts replay and subagents do not inherit hidden state.</p>
+    </section>
+
+    <section>
+      <h2>What you get</h2>
+      <div class="grid">
+        <a class="card" href="docs/DESIGN.html">
+          <span class="tag">maps</span>
+          <h3>One map per API</h3>
+          <p>Resources, operations, links and views in a versioned document. Import OpenAPI 3, or learn a shape from one live call.</p>
+        </a>
+        <a class="card" href="README.html#the-five-verbs">
+          <span class="tag">handles</span>
+          <h3>Drill-down is free</h3>
+          <p>Responses are stored behind content-addressed handles. A follow-up <code class="inline">read</code> costs no network call; handles expire.</p>
+        </a>
+        <a class="card" href="README.html#pins">
+          <span class="tag">pins</span>
+          <h3>Saved queries</h3>
+          <p>A pin names an operation, its arguments and an address. <code class="inline">read @name</code> resolves it again, in any later session.</p>
+        </a>
+        <a class="card" href="README.html#writes">
+          <span class="tag">writes</span>
+          <h3>A real write gate</h3>
+          <p>Anything but GET/HEAD is previewed first. <code class="inline">confirm</code>, <code class="inline">open</code> or <code class="inline">deny</code> per workspace; no automatic retries.</p>
+        </a>
+        <a class="card" href="README.html#secrets">
+          <span class="tag">secrets</span>
+          <h3>Names, never values</h3>
+          <p>A map names a credential; a human binds it to exactly one host. No tool call can create a binding.</p>
+        </a>
+        <a class="card" href="README.html#usage">
+          <span class="tag">standalone</span>
+          <h3>CLI, library, MCP</h3>
+          <p>No Electron, no local bridge. The same verbs from a shell, a stdio MCP server or an import in your own code.</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="quick-start">
+      <h2>Quick start</h2>
+      <p class="section-lede">Node 22 or newer. Run the published package without installing it, or add it to an MCP client.</p>
+      <div class="cols">
+        <div class="term">
+          <div class="term-bar">npm</div>
+          <pre><span class="p">$</span> npx -y anyapi-to-mcp ls \
+    --workspace ./workspace.json
+
+<span class="p">$</span> npx -y anyapi-to-mcp describe products.list
+
+<span class="p">$</span> npx -y anyapi-to-mcp serve \
+    --workspace ./workspace.json</pre>
+        </div>
+        <div class="term">
+          <div class="term-bar">mcp client config</div>
+          <pre>{
+  "mcpServers": {
+    "wrap2mcp": {
+      "command": "npx",
+      "args": ["-y", "anyapi-to-mcp",
+               "serve",
+               "--workspace", "./workspace.json"]
+    }
+  }
+}</pre>
+        </div>
+      </div>
+      <div class="steps" style="margin-top:18px">
+        <div class="step"><h3>Write a map</h3><p>Hand-write one, <code class="inline">import</code> an OpenAPI 3 document, or <code class="inline">learn</code> a draft from one live call.</p></div>
+        <div class="step"><h3>Point a workspace at it</h3><p><code class="inline">workspace.json</code> names the map directory, the payload cache and the write policy.</p></div>
+        <div class="step"><h3>Connect the agent</h3><p><code class="inline">serve</code> speaks stdio MCP. The agent navigates with <code class="inline">ls</code>, <code class="inline">find</code>, <code class="inline">describe</code>, <code class="inline">run</code> and <code class="inline">read</code>.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Where it fits</h2>
+      <div class="cols">
+        <div>
+          <p class="section-lede" style="margin-bottom:12px"><strong>Standalone by design.</strong> A library, a CLI and an MCP server over the same verbs. No host application, no Electron, no bridge process in the core.</p>
+          <p class="section-lede" style="margin-bottom:0">An alpha, built in the open. The API, file formats and tool schemas may change; the repository says so plainly.</p>
+        </div>
+        <div class="callout">
+          <strong>Experimental alpha software</strong>
+          <p>Not production-ready. Try it, break it, and file issues. The published package is <code class="inline">anyapi-to-mcp@0.1.2</code>; the CLI is <code class="inline">wrap2mcp</code>.</p>
+          <p><a href="docs/DESIGN.html">Design notes</a> · <a href="https://github.com/hyperbolictonic/anyapi-to-mcp/issues">Issues</a> · <a href="AGENTS.html">Working rules</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Any API → MCP · typed, token-efficient, navigable</span>
+      <span><a href="https://hyperbolictonic.github.io/">HyperbolicTonic</a> · <a href="README.html">Overview</a> · <a href="index.md">Markdown</a> · MIT</span>
+    </div>
+  </footer>
+</body>
+</html>

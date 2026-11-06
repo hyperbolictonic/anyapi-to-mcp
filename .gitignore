@@ -3,6 +3,9 @@ dist/
 coverage/
 *.tsbuildinfo
 
+# Generated GitHub Pages output
+_site/
+
 # Local runtime state and secrets
 .env
 .env.*

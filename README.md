@@ -16,8 +16,8 @@ headers and JSON envelopes — or loading a multi-megabyte OpenAPI document.
 > addresses and envelopes, the runtime executes operations under an outbound
 > policy and stores payloads behind content-addressed handles, and the five verbs
 > are served by both a stdio MCP server and the `wrap2mcp` CLI. A map can be
-> imported from OpenAPI 3 or learned from one live call. The package is not yet
-> published to npm.
+> imported from OpenAPI 3 or learned from one live call. The package is published
+> on npm as `anyapi-to-mcp`.
 
 ## Names
 
@@ -57,10 +57,10 @@ Both `wrap2mcp` and `anyapi-to-mcp` run the same CLI.
 - Keep what matters: a pin names a query, re-resolves next session, and can be
   committed to the repository.
 
-## What it will do
+## Published and embeddable
 
-- Be published to npm so `npx anyapi-to-mcp` runs without a checkout.
-- Be embedded by a host app; the library, CLI and MCP server are all entry
+- Published on npm, so `npx -y anyapi-to-mcp` runs without a checkout.
+- Embeddable by a host app; the library, CLI and MCP server are all entry
   points into the same verbs.
 
 ## The five verbs
@@ -78,29 +78,31 @@ replay, subagents don’t inherit hidden state, and the audit log is reconstruct
 
 ## Usage
 
-Run from this repository (`pnpm cli` builds once, then runs the compiled CLI);
-the tarball from `pnpm pack` installs into any project, and npm publication is
-still pending:
+Install it, or run it from this repository (`pnpm cli` builds once, then runs
+the compiled CLI). The published package and a `pnpm pack` tarball both ship the
+same CLI:
 
 ```bash
-pnpm cli ls                                  # maps
-pnpm cli ls /dummyjson                       # resources
-pnpm cli describe products.list              # inputs, view, links
-pnpm cli run products.list limit=3           # rows + handle
-pnpm cli run products.list limit=3 --cursor c_…  # next page, from the cursor printed before
-pnpm cli run products.add title=New --confirm  # a write: previewed first, then sent
-pnpm cli run products.add title=New --writes open  # no confirmation for this call
-pnpm cli read r_64172fe191255484 /products/1 # no network
-pnpm cli find products
-pnpm cli pin cheap products.list limit=3 --address /products --fields id,title,price
-pnpm cli ls /pins                              # saved queries and their state
-pnpm cli read @cheap                           # re-resolve, in any later session
-pnpm cli unpin cheap
-pnpm cli prune                                 # report; --apply removes dead pins
-pnpm cli import openapi ./api.yaml             # spec -> map
-pnpm cli learn https://dummyjson.com/products  # one call -> draft map
-pnpm cli serve                                 # stdio MCP server
+npx -y anyapi-to-mcp ls                     # maps
+npx -y anyapi-to-mcp ls /dummyjson          # resources
+npx -y anyapi-to-mcp describe products.list # inputs, view, links
+npx -y anyapi-to-mcp run products.list limit=3   # rows + handle
+npx -y anyapi-to-mcp run products.list limit=3 --cursor c_…  # next page, from the cursor printed before
+npx -y anyapi-to-mcp run products.add title=New --confirm    # a write: previewed first, then sent
+npx -y anyapi-to-mcp run products.add title=New --writes open # no confirmation for this call
+npx -y anyapi-to-mcp read r_64172fe191255484 /products/1     # no network
+npx -y anyapi-to-mcp find products
+npx -y anyapi-to-mcp pin cheap products.list limit=3 --address /products --fields id,title,price
+npx -y anyapi-to-mcp ls /pins                # saved queries and their state
+npx -y anyapi-to-mcp read @cheap             # re-resolve, in any later session
+npx -y anyapi-to-mcp unpin cheap
+npx -y anyapi-to-mcp prune                   # report; --apply removes dead pins
+npx -y anyapi-to-mcp import openapi ./api.yaml     # spec -> map
+npx -y anyapi-to-mcp learn https://dummyjson.com/products  # one call -> draft map
+npx -y anyapi-to-mcp serve                   # stdio MCP server
 ```
+
+From a checkout, use `pnpm cli` in place of `npx -y anyapi-to-mcp`.
 
 Add `--workspace examples/workspace.json` (or run from a directory containing
 `workspace.json`) to point at a set of maps. Commands that print an envelope
@@ -214,8 +216,8 @@ As an MCP server:
 {
   "mcpServers": {
     "wrap2mcp": {
-      "command": "node",
-      "args": ["<repo>/bin/wrap2mcp.js", "serve", "--workspace", "<repo>/examples/workspace.json"]
+      "command": "npx",
+      "args": ["-y", "anyapi-to-mcp", "serve", "--workspace", "./workspace.json"]
     }
   }
 }
@@ -281,9 +283,11 @@ pnpm pack           # the tarball ships dist, bin, README and LICENSE
 `pnpm cli` builds first, because `bin/wrap2mcp.js` resolves the compiled
 `dist/cli.js`; the source itself is what the tests run.
 
-Do not commit `package-lock.json` or `yarn.lock`. The MCP config above uses
-`node` plus a path because the package is not published yet; the published form
-will be `npx -y anyapi-to-mcp serve`.
+Do not commit `package-lock.json` or `yarn.lock`.
+
+`pnpm build:pages` renders the GitHub Pages site into `_site/` from `site/`,
+`README.md`, `docs/DESIGN.md`, `AGENTS.md` and `examples/README.md`; CI deploys
+that directory on a push to `main`.
 
 ## Documentation
 

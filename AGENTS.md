@@ -39,6 +39,9 @@ directory structure by default.
   `<home>`, or environment variables instead.
 - `node_modules/`, build output, coverage and local data are ignored; do not
   commit them.
+- The GitHub Pages site is generated from repository Markdown by
+  `scripts/build-pages.mjs` (`pnpm build:pages`). Do not commit `_site/`, and
+  keep a Markdown alternate next to every page.
 - Run typecheck and tests before committing once those scripts exist.
 - Update the docs when a decision changes; `DESIGN.md` is the decision log.
 

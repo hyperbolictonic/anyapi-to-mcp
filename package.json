@@ -7,7 +7,7 @@
     "type": "git",
     "url": "git+https://github.com/hyperbolictonic/anyapi-to-mcp.git"
   },
-  "homepage": "https://github.com/hyperbolictonic/anyapi-to-mcp#readme",
+  "homepage": "https://hyperbolictonic.github.io/anyapi-to-mcp/",
   "bugs": {
     "url": "https://github.com/hyperbolictonic/anyapi-to-mcp/issues"
   },
@@ -63,7 +63,8 @@
     "test": "node --test",
     "example": "node examples/view-quickstart.ts",
     "cli": "pnpm -s build && node bin/wrap2mcp.js",
-    "smoke": "node examples/runtime-smoke.ts"
+    "smoke": "node examples/runtime-smoke.ts",
+    "build:pages": "node scripts/build-pages.mjs"
   },
   "keywords": [
     "mcp",
@@ -77,6 +78,7 @@
   ],
   "devDependencies": {
     "@types/node": "^22.10.0",
+    "marked": "^18.1.3",
     "typescript": "^5.7.0"
   },
   "publishConfig": {
